@@ -1,32 +1,82 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <v-app>
+    <v-app-bar
+      class="col-lg-10 mx-auto"
+      app
+      fixed
+      color="#43a047"
+      dark
+      shrink-on-scroll
+      src="https://picsum.photos/1920/1080?random"
+      fade-img-on-scroll
+      scroll-threshold="500"
+    >
+      <template v-slot:img="{props}">
+        <v-img
+          v-bind="props"
+          gradient="to top right, rgba(55,236,186,.7), rgba(25,32,72,.7)"
+        ></v-img>
+      </template>
+
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-app-bar-title class="flex-shrink-0">Пироженка</v-app-bar-title>
+      <v-spacer></v-spacer>
+      <v-tabs align-with-title>
+        <router-link
+          role="tab"
+          class="v-tab"
+          :to="{name: 'home'}"
+          exact
+          active-class="v-tab--active"
+          >Главная</router-link
+        ><router-link
+          role="tab"
+          class="v-tab"
+          :to="{name: 'about'}"
+          active-class="v-tab--active"
+          >О нас</router-link
+        ><router-link
+          role="tab"
+          class="v-tab"
+          :to="{name: 'calc'}"
+          active-class="v-tab--active"
+          >Калькулятор</router-link
+        >
+      </v-tabs>
+
+      <v-btn icon>
+        <v-img src="@/assets/odnoklassniki.png" class="mt-n6"></v-img>
+      </v-btn>
+
+      <v-btn icon>
+        <v-img src="@/assets/insta.png" class="mt-n6"></v-img>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-dots-vertical</v-icon>
+      </v-btn>
+    </v-app-bar>
+
+    <v-main
+      class="col-lg-10 mx-auto overflow - y - auto"
+      id="scrolling-techniques-5"
+      max-height="600"
+    >
+      <router-view />
+    </v-main>
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script lang="ts">
+import Vue from 'vue'
 
-#nav {
-  padding: 30px;
-}
+export default Vue.extend({
+  name: 'App',
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  components: {},
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+  data: () => ({
+    //
+  })
+})
+</script>
