@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar
-      class="col-lg-10 mx-auto"
+      class="col-lg-10 mx-auto pl-0"
       app
       fixed
       color="#43a047"
@@ -48,7 +48,7 @@
         <v-img src="@/assets/odnoklassniki.png" class="mt-n6"></v-img>
       </v-btn>
 
-      <v-btn icon>
+      <v-btn icon href="https://www.instagram.com/natali0603_/" target="_blank">
         <v-img src="@/assets/insta.png" class="mt-n6"></v-img>
       </v-btn>
 
@@ -73,10 +73,6 @@ import Vue from 'vue'
 export default Vue.extend({
   name: 'App',
 
-  components: {},
-
-  data: () => ({
-    //
-  })
+  components: {}
 })
 </script>
