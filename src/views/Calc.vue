@@ -6,20 +6,13 @@
       </v-row>
       <hr />
       <v-row class="my-5">
-        <v-col>
-          <v-btn class="success"> Добавить слой </v-btn>
-        </v-col>
-      </v-row>
-      <hr />
-      <v-row class="my-5">
-        <v-col class="col-6">
+        <v-col class="col-md-4 d-sm-none d-md-flex">
           <v-img
             class="mx-auto"
             src="https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/137296470_951107405706801_4544090276522456318_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=109&_nc_ohc=jP576RcJs44AX-QHMt5&tp=1&oh=6d2d43bfd3cf282fc9f039239cf6390f&oe=60402B8F"
-            max-width="400"
           />
         </v-col>
-        <v-col>
+        <v-col class=" col-md-8 col-sm-11 mx-auto">
           <v-data-table
             v-model="layers"
             :headers="headers"
@@ -30,7 +23,7 @@
             hide-default-footer
           >
           </v-data-table>
-          <v-card class="mx-auto my-0" max-width="800">
+          <v-card class="mx-auto my-0 elevation-5" max-width="800">
             <v-card-text>
               <v-row class="mb-4" justify="space-between">
                 <v-col class="text-left">
@@ -66,7 +59,7 @@
               </v-slider>
             </v-card-text>
           </v-card>
-          <v-card class="mx-auto" max-width="800">
+          <v-card class="mx-auto elevation-5" max-width="800">
             <v-card-text>
               <v-row class="mb-4" justify="space-between">
                 <v-col class="text-left">
@@ -89,13 +82,13 @@
                 max="20"
               >
                 <template v-slot:prepend>
-                  <v-icon :color="color" @click="decrementH">
+                  <v-icon :color="color" @click="decrementHeight">
                     mdi-minus
                   </v-icon>
                 </template>
 
                 <template v-slot:append>
-                  <v-icon :color="color" @click="incrementH">
+                  <v-icon :color="color" @click="incrementHeight">
                     mdi-plus
                   </v-icon>
                 </template>
@@ -107,17 +100,17 @@
       <hr />
       <v-row class="my-5">
         <v-col class="col-2">
-          <v-card>
+          <v-card class="elevation-5">
             <h3 class="text-center">{{ total }} руб.</h3>
           </v-card>
         </v-col>
         <v-col class="col-2">
-          <v-card>
+          <v-card class="elevation-5">
             <h3 class="text-center">{{ weight }} кг.</h3>
           </v-card>
         </v-col>
         <v-col>
-          <v-btn class="success"> Отправить заявку </v-btn>
+          <v-btn class="success elevation-5"> Отправить заявку </v-btn>
         </v-col>
       </v-row>
     </v-container>
@@ -126,7 +119,6 @@
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
-import {$internalHooks} from 'vue-class-component/lib/component'
 
 @Component({
   components: {}
@@ -137,13 +129,13 @@ export default class Calc extends Vue {
 
   get weight(): number {
     return (
-      Math.floor((((this.bpm * this.bpm) / 4) * Math.PI * this.height) / 100) /
+      Math.floor((this.bpm * this.bpm * Math.PI * this.height * 1.25) / 100) /
       100
     )
   }
 
   get cakePrice() {
-    return +(this.weight * 18).toFixed(2)
+    return +(this.weight * 20).toFixed(2)
   }
   private headers = [
     {
@@ -232,11 +224,11 @@ export default class Calc extends Vue {
   private increment(): void {
     this.bpm++
   }
-  private decrementH(): void {
-    this.bpm--
+  private decrementHeight(): void {
+    this.height--
   }
-  private incrementH(): void {
-    this.bpm++
+  private incrementHeight(): void {
+    this.height++
   }
 }
 </script>
