@@ -6,7 +6,7 @@
       </v-row>
       <hr />
       <v-row class="my-5">
-        <v-col class="col-md-4 d-sm-none d-md-flex">
+        <v-col class="col-md-4 d-none d-md-flex">
           <v-img
             class="mx-auto"
             src="https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/137296470_951107405706801_4544090276522456318_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=109&_nc_ohc=jP576RcJs44AX-QHMt5&tp=1&oh=6d2d43bfd3cf282fc9f039239cf6390f&oe=60402B8F"
@@ -99,17 +99,17 @@
       </v-row>
       <hr />
       <v-row class="my-5">
-        <v-col class="col-2">
+        <v-col class="col-6 col-md-4">
           <v-card class="elevation-5">
             <h3 class="text-center">{{ total }} руб.</h3>
           </v-card>
         </v-col>
-        <v-col class="col-2">
+        <v-col class="col-6 col-md-4">
           <v-card class="elevation-5">
             <h3 class="text-center">{{ weight }} кг.</h3>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col class="col-12 col-md-4">
           <v-btn class="success elevation-5"> Отправить заявку </v-btn>
         </v-col>
       </v-row>
@@ -145,7 +145,6 @@ export default class Calc extends Vue {
       value: 'name'
     },
     {text: 'Описание', value: 'description'},
-    {text: 'Protein (g)', value: 'protein'},
     {text: 'Стоимость', value: 'price'}
   ]
   private desserts = [
@@ -160,25 +159,21 @@ export default class Calc extends Vue {
       name: 'Глазурь',
       description:
         'Глазурь — кондитерский полуфабрикат, покрытие на поверхности кондитерских изделий',
-      protein: 0,
       price: 0
     },
     {
       name: 'Украшения',
       description: 'Цвтетные украшения из белого шоколада',
-      protein: 0,
       price: 4
     },
     {
       name: 'Свечи',
       description: 'Цифры или маленькие свечки',
-      protein: 0,
       price: 1
     },
     {
       name: 'Упаковка',
       description: 'Качественная картонная упаковка с пластиковым окошком',
-      protein: 0,
       price: 3
     }
   ]
