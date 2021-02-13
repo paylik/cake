@@ -23,15 +23,14 @@
             hide-default-footer
           >
           </v-data-table>
-          <v-card class="mx-auto my-0 elevation-5" max-width="800">
+          <v-card class="mx-auto my-0 elevation-5">
             <v-card-text>
               <v-row class="mb-4" justify="space-between">
                 <v-col class="text-left">
                   <span
                     class="display-1 font-weight-light"
-                    v-text="`Диаметр-` + bpm"
-                    >Диаметр</span
-                  >
+                    v-text="`Диаметр - ` + bpm"
+                  ></span>
                   <span class="display-1 font-weight-light">см.</span>
                 </v-col>
                 <v-col class="text-right"> </v-col>
@@ -59,15 +58,14 @@
               </v-slider>
             </v-card-text>
           </v-card>
-          <v-card class="mx-auto elevation-5" max-width="800">
+          <v-card class="mx-auto elevation-5">
             <v-card-text>
               <v-row class="mb-4" justify="space-between">
                 <v-col class="text-left">
                   <span
                     class="display-1 font-weight-light"
-                    v-text="`Высота-` + height"
-                    >Диаметр</span
-                  >
+                    v-text="`Высота - ` + height"
+                  ></span>
                   <span class="display-1 font-weight-light">см.</span>
                 </v-col>
                 <v-col class="text-right"> </v-col>

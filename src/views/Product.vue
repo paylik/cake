@@ -1,0 +1,55 @@
+<template>
+  <div>
+    <v-container v-if="product">
+      <v-row>
+        <v-col>
+          <div class="text-h3">
+            {{ product.title }}
+          </div>
+        </v-col>
+      </v-row>
+      <v-row>
+        <v-img
+          max-height="350"
+          max-width="650"
+          :src="product.image"
+          class="mx-auto"
+        ></v-img>
+      </v-row>
+      <v-row>
+        <v-col>
+          {{ product.description }}
+        </v-col>
+      </v-row>
+      <v-row v-if="isUserLogin"
+        ><v-spacer></v-spacer>
+        <v-col>
+          <app-edit-product-modal :product="product"></app-edit-product-modal>
+          <v-btn class="warning mx-auto" @click="onDelete"> Удалить </v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-container v-else>
+      <app-e404></app-e404>
+    </v-container>
+  </div>
+</template>
+
+<script lang="ts">
+import {Component, Vue, Prop} from 'vue-property-decorator'
+import E404 from '@/views/E404.vue'
+
+@Component({
+  components: {
+    appE404: E404
+  }
+})
+export default class Product extends Vue {
+  @Prop(String)
+  readonly id!: string
+
+  get product():
+}
+</script>
+
+<style scoped></style>

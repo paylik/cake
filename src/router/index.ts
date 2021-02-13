@@ -21,6 +21,16 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/Calc.vue')
   },
   {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/Login.vue')
+  },
+  {
+    path: '/product/:id',
+    name: 'product',
+    component: () => import('@/views/Product.vue')
+  },
+  {
     path: '/*',
     name: 'e404',
     component: () => import('@/views/E404.vue')
