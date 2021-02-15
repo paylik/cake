@@ -24,7 +24,7 @@
       <v-row v-if="isUserLogin"
         ><v-spacer></v-spacer>
         <v-col>
-          <app-edit-product-modal :product="product"></app-edit-product-modal>
+<!--          <app-edit-product-modal :product="product"></app-edit-product-modal>-->
           <v-btn class="warning mx-auto" @click="onDelete"> Удалить </v-btn>
         </v-col>
       </v-row>
@@ -37,6 +37,7 @@
 
 <script lang="ts">
 import {Component, Vue, Prop} from 'vue-property-decorator'
+import {ProductClass} from '@/store/product.ts'
 import E404 from '@/views/E404.vue'
 
 @Component({
@@ -48,7 +49,23 @@ export default class Product extends Vue {
   @Prop(String)
   readonly id!: string
 
-  get product():
+  get product(): ProductClass {
+    return this.$store.getters.productById( this.id )
+  }
+
+  get isUserLogin(): boolean {
+    return this.$store.getters.isUserLogin
+  }
+
+  get loading(): boolean {
+    return this.$store.getters.loading
+  }
+
+  private onDelete(): void {
+    const {id} = this.product
+
+    this.$store.dispatch('deleteProduct', id).then(() => this.$router.push('/'))
+  }
 }
 </script>
 

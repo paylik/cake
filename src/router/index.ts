@@ -26,8 +26,9 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/Login.vue')
   },
   {
-    path: '/product/:id',
+    path: '/product/:name',
     name: 'product',
+    props: true,
     component: () => import('@/views/Product.vue')
   },
   {

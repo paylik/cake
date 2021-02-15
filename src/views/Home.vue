@@ -16,7 +16,12 @@
         </v-col>
       </v-row>
       <v-row class="justify-center">
+        <v-col>
         <h1 class="py-6">Мы предлагаем:</h1>
+        </v-col>
+        <v-col>
+          <v-btn class="success my-6">Добавить</v-btn>
+        </v-col>
       </v-row>
       <v-row
         v-for="product in products"
@@ -28,7 +33,8 @@
         </v-col>
         <v-col class="col-10 my-auto">
           <h4>{{ product.description }}</h4>
-          <router-link :to="'/product/' + product.name">Подробнее</router-link>
+          <router-link :to="'/product/' + product.name" >
+            <v-btn class="success rounded" small >Подробнее</v-btn></router-link>
         </v-col>
       </v-row>
     </v-container>
@@ -82,6 +88,7 @@ export default class Home extends Vue {
   ]
   private products = [
     {
+      id: '1',
       name: 'cake',
       image:
         'https://scontent-frt3-2.cdninstagram.com/v/t51.2885-15/e35/s1080x1080/125432494_388610018855067_6716365889788440693_n.jpg?_nc_ht=scontent-frt3-2.cdninstagram.com&_nc_cat=103&_nc_ohc=LN_CJLtH5aEAX90NdHA&tp=1&oh=e6ea34a2a99952e0c722dfa4e83ed96b&oe=604722D1',
@@ -89,12 +96,14 @@ export default class Home extends Vue {
         'Торты любого размера, цвета, наполнения и украшений. Более точную цену вы сможете узнать на строничке калькулятора.'
     },
     {
+      id: '2',
       name: 'curd',
       image:
         'https://scontent-frx5-1.cdninstagram.com/v/t51.2885-15/e35/s1080x1080/125520266_2853812301515472_6812759515572880815_n.jpg?_nc_ht=scontent-frx5-1.cdninstagram.com&_nc_cat=100&_nc_ohc=A4Pj4mfb1Y0AX-6n9ly&tp=1&oh=f9ef7ed8fafb288ba33b5a43800f9ca4&oe=6045AEED',
       description: 'Творожные десерты в стаканчике с разнообразной начинкой.'
     },
     {
+      id: '3',
       name: 'smallCake',
       image:
         'https://scontent-frt3-1.cdninstagram.com/v/t51.2885-15/e35/131394858_218280403150125_2019345363854513560_n.jpg?_nc_ht=scontent-frt3-1.cdninstagram.com&_nc_cat=109&_nc_ohc=Y8rPy8FC7v0AX-jmoio&tp=1&oh=adf5fbdc329c63e7d730ebb764c9224f&oe=6044ABA9',
