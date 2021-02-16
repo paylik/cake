@@ -26,10 +26,15 @@ const routes: Array<RouteConfig> = [
     component: () => import('@/views/Login.vue')
   },
   {
-    path: '/product/:name',
+    path: '/product/:id',
     name: 'product',
     props: true,
     component: () => import('@/views/Product.vue')
+  },
+  {
+    path: '/newProduct',
+    name: 'newProduct',
+    component: () => import('@/views/NewProduct.vue')
   },
   {
     path: '/*',

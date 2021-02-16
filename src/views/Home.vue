@@ -17,10 +17,12 @@
       </v-row>
       <v-row class="justify-center">
         <v-col>
-        <h1 class="py-6">Мы предлагаем:</h1>
+          <h1 class="py-6">Мы предлагаем:</h1>
         </v-col>
         <v-col>
-          <v-btn class="success my-6">Добавить</v-btn>
+          <router-link :to="{name: 'newProduct'}">
+            <v-btn class="success my-6">Добавить</v-btn>
+          </router-link>
         </v-col>
       </v-row>
       <v-row
@@ -33,8 +35,9 @@
         </v-col>
         <v-col class="col-10 my-auto">
           <h4>{{ product.description }}</h4>
-          <router-link :to="'/product/' + product.name" >
-            <v-btn class="success rounded" small >Подробнее</v-btn></router-link>
+          <router-link :to="'/product/' + product.id">
+            <v-btn class="success rounded" small>Подробнее</v-btn></router-link
+          >
         </v-col>
       </v-row>
     </v-container>

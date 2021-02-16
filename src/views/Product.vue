@@ -1,10 +1,10 @@
 <template>
   <div>
-    <v-container v-if="product">
+    <v-container>
       <v-row>
         <v-col>
           <div class="text-h3">
-            {{ product.title }}
+            {{ product.name }}
           </div>
         </v-col>
       </v-row>
@@ -12,7 +12,7 @@
         <v-img
           max-height="350"
           max-width="650"
-          :src="product.image"
+          :src="product.img"
           class="mx-auto"
         ></v-img>
       </v-row>
@@ -24,12 +24,12 @@
       <v-row v-if="isUserLogin"
         ><v-spacer></v-spacer>
         <v-col>
-<!--          <app-edit-product-modal :product="product"></app-edit-product-modal>-->
+          <!--          <app-edit-product-modal :product="product"></app-edit-product-modal>-->
           <v-btn class="warning mx-auto" @click="onDelete"> Удалить </v-btn>
         </v-col>
       </v-row>
     </v-container>
-    <v-container v-else>
+    <v-container>
       <app-e404></app-e404>
     </v-container>
   </div>
@@ -50,7 +50,7 @@ export default class Product extends Vue {
   readonly id!: string
 
   get product(): ProductClass {
-    return this.$store.getters.productById( this.id )
+    return this.$store.getters.productById(this.id)
   }
 
   get isUserLogin(): boolean {
