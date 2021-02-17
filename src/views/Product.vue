@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-container>
+    <v-container v-if="product">
       <v-row>
         <v-col>
           <div class="text-h3">
@@ -29,7 +29,7 @@
         </v-col>
       </v-row>
     </v-container>
-    <v-container>
+    <v-container v-else>
       <app-e404></app-e404>
     </v-container>
   </div>

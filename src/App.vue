@@ -84,7 +84,7 @@ export default class App extends Vue {
       }
     })
     // this.$store.dispatch('fetchLinks')
-    // this.$store.dispatch('fetchNews')
+    this.$store.dispatch('fetchProducts')
   }
 }
 </script>

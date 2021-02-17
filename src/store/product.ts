@@ -185,7 +185,7 @@ export default {
           .database()
           .ref(`products/${id}`)
           .once('value')
-        const ref = value.val().image
+        const ref = value.val().img
         const fullName = firebase.storage().refFromURL(`${ref}`).name
         const file = firebase
           .storage()
