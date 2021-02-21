@@ -78,7 +78,7 @@
 
 <script lang="ts">
 import {Component, Vue} from 'vue-property-decorator'
-import product, {ProductClass} from '@/store/product'
+import {ProductClass} from '@/store/product'
 
 const img = new File(['@/assets/noFoto.jpg'], 'noFoto.jpg')
 

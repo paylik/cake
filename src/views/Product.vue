@@ -24,6 +24,7 @@
       <v-row v-if="isUserLogin"
         ><v-spacer></v-spacer>
         <v-col>
+          <app-edit-product-modal :product="product"></app-edit-product-modal>
           <!--          <app-edit-product-modal :product="product"></app-edit-product-modal>-->
           <v-btn class="warning mx-auto" @click="onDelete"> Удалить </v-btn>
         </v-col>
@@ -39,10 +40,12 @@
 import {Component, Vue, Prop} from 'vue-property-decorator'
 import {ProductClass} from '@/store/product.ts'
 import E404 from '@/views/E404.vue'
+import EditProductModal from '@/views/EditProductModal.vue'
 
 @Component({
   components: {
-    appE404: E404
+    appE404: E404,
+    appEditProductModal: EditProductModal
   }
 })
 export default class Product extends Vue {
@@ -62,9 +65,16 @@ export default class Product extends Vue {
   }
 
   private onDelete(): void {
-    const {id} = this.product
+    const sure = confirm('Вы точно хлтите удалить продукт?')
+    if (sure) {
+      const {id} = this.product
 
-    this.$store.dispatch('deleteProduct', id).then(() => this.$router.push('/'))
+      this.$store
+        .dispatch('deleteProduct', id)
+        .then(() => this.$router.push('/'))
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch(() => {})
+    }
   }
 }
 </script>

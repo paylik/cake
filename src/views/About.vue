@@ -52,6 +52,16 @@
           </p>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col>
+          <v-img src="@/assets/123.jpg"></v-img>
+        </v-col>
+        <v-col>
+          <v-spacer></v-spacer>
+          <v-img src="@/assets/sert.jpg"></v-img>
+          <v-spacer></v-spacer>
+        </v-col>
+      </v-row>
     </v-container>
   </div>
 </template>

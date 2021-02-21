@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import Vuex, {Store} from 'vuex'
 import firebase from 'firebase'
-import {VueRouter} from 'vue-router/types/router'
-import storage = firebase.storage
 
 export class ProductClass {
   id: string
@@ -148,7 +146,7 @@ export default {
             .put(img)
           const imgSrc = await firebase
             .storage()
-            .ref(`\`products/${id}.${imgExt}\`/${id}.${imgExt}`)
+            .ref(`products/${id}.${imgExt}`)
             .getDownloadURL()
           await firebase
             .database()
@@ -159,6 +157,12 @@ export default {
               description,
               img: imgSrc
             })
+          commit('updateProduct', {
+            id,
+            name,
+            description,
+            img: imgSrc
+          })
         } else {
           await firebase
             .database()
@@ -168,6 +172,12 @@ export default {
               name,
               description
             })
+          commit('updateProduct', {
+            id,
+            name,
+            description,
+            img
+          })
         }
         commit('setLoading', false)
       } catch (error) {

@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import firebase from 'firebase'
 import user from '@/store/user'
 import product from '@/store/product'
+import ingredient from '@/store/ingredient'
 
 Vue.use(Vuex)
 
@@ -32,7 +33,8 @@ export default new Vuex.Store({
   },
   modules: {
     user,
-    product
+    product,
+    ingredient
   },
   getters: {
     loading(state) {

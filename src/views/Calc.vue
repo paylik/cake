@@ -3,6 +3,11 @@
     <v-container>
       <v-row class="my-5">
         <v-col> <h1>Калькулятор</h1> </v-col>
+        <v-col>
+          <app-new-ingredient></app-new-ingredient>
+          {{ cake }}
+          {{ cakePrice }}
+        </v-col>
       </v-row>
       <hr />
       <v-row class="my-5">
@@ -117,13 +122,16 @@
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
+import NewIngredient from '@/views/NewIngredient.vue'
+import {IngredientClass} from '@/store/ingredient'
 
 @Component({
-  components: {}
+  components: {appNewIngredient: NewIngredient}
 })
 export default class Calc extends Vue {
   private bpm = 20
   private height = 10
+  private desserts = this.$store.getters.ingredientList
 
   get weight(): number {
     return (
@@ -132,9 +140,6 @@ export default class Calc extends Vue {
     )
   }
 
-  get cakePrice() {
-    return +(this.weight * 20).toFixed(2)
-  }
   private headers = [
     {
       text: 'Ингредиенты',
@@ -145,60 +150,31 @@ export default class Calc extends Vue {
     {text: 'Описание', value: 'description'},
     {text: 'Стоимость', value: 'price'}
   ]
-  private desserts = [
-    {
-      name: 'Основа торта',
-      description:
-        'Бисквитные торты. Торты из бисквитного теста получаются пышными и нежными.',
-      selected: true,
-      price: this.cakePrice
-    },
-    {
-      name: 'Глазурь',
-      description:
-        'Глазурь — кондитерский полуфабрикат, покрытие на поверхности кондитерских изделий',
-      price: 0
-    },
-    {
-      name: 'Украшения',
-      description: 'Цвтетные украшения из белого шоколада',
-      price: 4
-    },
-    {
-      name: 'Свечи',
-      description: 'Цифры или маленькие свечки',
-      price: 1
-    },
-    {
-      name: 'Упаковка',
-      description: 'Качественная картонная упаковка с пластиковым окошком',
-      price: 3
-    }
-  ]
-  private cake: any = this.desserts.find(h => h.name === 'Основа торта')
 
   @Watch('cakePrice')
-  onCange(weight: number, cake: any) {
-    this.cake.price = this.cakePrice
+  onChange() {
+    this.cake = this.cakePrice
   }
 
-  private layersTypes = {
-    biscuit: {
-      prise1sm: 1,
-      label: 'Бисквит'
-    },
-    bese: {
-      prise1sm: 2,
-      label: 'Безе'
-    },
-    curd: {
-      prise1sm: 1,
-      label: 'Творожный'
-    }
-  }
+  // private layersTypes = {
+  //   biscuit: {
+  //     prise1sm: 1,
+  //     label: 'Бисквит'
+  //   },
+  //   bese: {
+  //     prise1sm: 2,
+  //     label: 'Безе'
+  //   },
+  //   curd: {
+  //     prise1sm: 1,
+  //     label: 'Творожный'
+  //   }
+  // }
+
   private layers = this.desserts.slice(0, 2)
+
   get total(): number {
-    return this.layers.reduce(function(sum: number, elem: any) {
+    return this.layers.reduce(function(sum: number, elem: IngredientClass) {
       return sum + elem.price
     }, 0)
   }
@@ -222,6 +198,12 @@ export default class Calc extends Vue {
   }
   private incrementHeight(): void {
     this.height++
+  }
+
+  mounted() {
+    const cake = this.desserts.find(h => h.id === '-MU42gDBYiea6maSf-jM')
+
+    const cakePrice = +(this.weight * this.cake.price).toFixed(2)
   }
 }
 </script>

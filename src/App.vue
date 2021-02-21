@@ -83,7 +83,7 @@ export default class App extends Vue {
         this.$store.dispatch('autoLoginUser', user)
       }
     })
-    // this.$store.dispatch('fetchLinks')
+    this.$store.dispatch('fetchIngredients')
     this.$store.dispatch('fetchProducts')
   }
 }
