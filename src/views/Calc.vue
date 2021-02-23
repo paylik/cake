@@ -5,8 +5,9 @@
         <v-col> <h1>Калькулятор</h1> </v-col>
         <v-col>
           <app-new-ingredient></app-new-ingredient>
-          {{ cake }}
+
           {{ cakePrice }}
+
         </v-col>
       </v-row>
       <hr />
@@ -132,6 +133,11 @@ export default class Calc extends Vue {
   private bpm = 20
   private height = 10
   private desserts = this.$store.getters.ingredientList
+  // private layers = this.$store.getters.layersList
+  // private cake: IngredientClass = this.layers.find((h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk')
+
+  private layers = []
+  private cake: IngredientClass = new IngredientClass('', '', '', 0, false)
 
   get weight(): number {
     return (
@@ -139,6 +145,24 @@ export default class Calc extends Vue {
       100
     )
   }
+
+  private cakePrice = 0
+
+  beforeUpdate() {
+    this.layers = this.desserts.filter((v: IngredientClass) => v.checked)
+    const initialCake = this.desserts.find((h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk')!
+    this.cakePrice  = Object.assign({}, initialCake).price
+    console.log(this.cakePrice)
+    this.cake = this.layers.find((h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk')!
+    this.cake.price = +(this.weight * this.cakePrice).toFixed(2)
+  }
+
+
+  // @Watch('this.weight')
+  // onChange() {
+  //
+  //   this.cake.price = this.cakePrice
+  // }
 
   private headers = [
     {
@@ -150,28 +174,6 @@ export default class Calc extends Vue {
     {text: 'Описание', value: 'description'},
     {text: 'Стоимость', value: 'price'}
   ]
-
-  @Watch('cakePrice')
-  onChange() {
-    this.cake = this.cakePrice
-  }
-
-  // private layersTypes = {
-  //   biscuit: {
-  //     prise1sm: 1,
-  //     label: 'Бисквит'
-  //   },
-  //   bese: {
-  //     prise1sm: 2,
-  //     label: 'Безе'
-  //   },
-  //   curd: {
-  //     prise1sm: 1,
-  //     label: 'Творожный'
-  //   }
-  // }
-
-  private layers = this.desserts.slice(0, 2)
 
   get total(): number {
     return this.layers.reduce(function(sum: number, elem: IngredientClass) {
@@ -198,12 +200,6 @@ export default class Calc extends Vue {
   }
   private incrementHeight(): void {
     this.height++
-  }
-
-  mounted() {
-    const cake = this.desserts.find(h => h.id === '-MU42gDBYiea6maSf-jM')
-
-    const cakePrice = +(this.weight * this.cake.price).toFixed(2)
   }
 }
 </script>

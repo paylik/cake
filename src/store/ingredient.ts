@@ -6,12 +6,14 @@ export class IngredientClass {
   id: string
   name: string
   description: string
-  price: string
-  constructor(id: string, name: string, description: string, price: string) {
+  price: number
+  checked: boolean
+  constructor(id: string, name: string, description: string, price: number, checked: boolean) {
     this.id = id
     this.name = name
     this.description = description
     this.price = price
+    this.checked = checked
   }
 }
 
@@ -34,7 +36,7 @@ export default {
     },
     updateIngredient(
       state: State,
-      {id, name, description, price}: IngredientClass
+      {id, name, description, price, checked}: IngredientClass
     ) {
       const ingredient = state.ingredientList.find(
         (a: IngredientClass) => a.id === id
@@ -43,6 +45,7 @@ export default {
         ingredient.name = name
         ingredient.description = description
         ingredient.price = price
+        ingredient.checked = checked
       }
     },
     updateIngredientList(state: State, id: string) {
@@ -72,7 +75,8 @@ export default {
               key,
               ingredient.name,
               ingredient.description,
-              ingredient.price
+              ingredient.price,
+              ingredient.checked
             )
           )
         })
@@ -97,7 +101,8 @@ export default {
           '',
           payload.name,
           payload.description,
-          payload.price
+          payload.price,
+          payload.checked
         )
         const fbValue = firebase
           .database()
@@ -117,7 +122,7 @@ export default {
     },
     async updateIngredient(
       {commit}: {commit: Function},
-      {id, name, description, price}: IngredientClass
+      {id, name, description, price, checked}: IngredientClass
     ) {
       commit('clearError')
       commit('setLoading', true)
@@ -130,13 +135,15 @@ export default {
           .update({
             name,
             description,
-            price
+            price,
+            checked
           })
         commit('updateIngredient', {
           id,
           name,
           description,
-          price
+          price,
+          checked
         })
 
         commit('setLoading', false)

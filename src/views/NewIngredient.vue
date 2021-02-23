@@ -38,6 +38,14 @@
           >
           </v-text-field>
         </v-row>
+          <v-row>
+            <v-card-text> Выбрано </v-card-text>
+            <v-checkbox v-model="ingredient.checked" color="success" hide-details>
+
+            </v-checkbox>
+
+
+        </v-row>
       </v-card-text>
       <v-divider> </v-divider>
       <v-card-actions>
@@ -63,7 +71,7 @@ import {IngredientClass} from '@/store/ingredient'
 
 @Component
 export default class NewIngredient extends Vue {
-  private ingredient = new IngredientClass('', '', '', '')
+  private ingredient = new IngredientClass('', '', '', 0, false)
   private valid = false
   private dialog = false
 

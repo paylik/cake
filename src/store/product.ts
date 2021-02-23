@@ -15,8 +15,7 @@ export class ProductClass {
   }
 }
 
-interface State {
-  productList: Array<ProductClass>
+interface State {productList: Array<ProductClass>
 }
 
 Vue.use(Vuex)
