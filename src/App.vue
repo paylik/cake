@@ -85,6 +85,7 @@ export default class App extends Vue {
     })
     this.$store.dispatch('fetchIngredients')
     this.$store.dispatch('fetchProducts')
+    this.$store.dispatch('fetchLayers')
   }
 }
 </script>

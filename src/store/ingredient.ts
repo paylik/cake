@@ -8,7 +8,13 @@ export class IngredientClass {
   description: string
   price: number
   checked: boolean
-  constructor(id: string, name: string, description: string, price: number, checked: boolean) {
+  constructor(
+    id: string,
+    name: string,
+    description: string,
+    price: number,
+    checked: boolean
+  ) {
     this.id = id
     this.name = name
     this.description = description
@@ -19,17 +25,28 @@ export class IngredientClass {
 
 interface State {
   ingredientList: Array<IngredientClass>
+  layerList: Array<IngredientClass>
+  kgPrice: number
+  price: number
 }
 
 Vue.use(Vuex)
 
 export default {
   state: {
-    ingredientList: []
+    ingredientList: [],
+    kgPrice: 0,
+    layerList: []
   },
   mutations: {
     loadIngredient(state: State, payload: Array<IngredientClass>) {
       state.ingredientList.push(...payload)
+      state.kgPrice = state.ingredientList.find(
+        (h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk'
+      )!.price
+    },
+    loadLayerList(state: State, payload: Array<IngredientClass>) {
+      state.layerList.push(...payload)
     },
     createIngredient(state: State, payload: IngredientClass) {
       state.ingredientList.push(payload)
@@ -82,6 +99,41 @@ export default {
         })
 
         commit('loadIngredient', resultIngredient)
+        commit('setLoading', false)
+      } catch (error) {
+        commit('setError', error.message)
+        commit('setLoading', false)
+        throw error
+      }
+    },
+    async fetchLayers({commit}: {commit: Function}) {
+      commit('clearError')
+      commit('setLoading', true)
+
+      const resultLayer: Array<IngredientClass> = []
+
+      try {
+        const fbVal = await firebase
+          .database()
+          .ref('ingredient')
+          .once('value')
+        const bdLayers = fbVal.val()
+
+        Object.keys(bdLayers).forEach(key => {
+          const ingredient = bdLayers[key]
+          resultLayer.push(
+            new IngredientClass(
+              key,
+              ingredient.name,
+              ingredient.description,
+              ingredient.price,
+              ingredient.checked
+            )
+          )
+        })
+        const filteredLayers = resultLayer.filter(v => v.checked)
+
+        commit('loadLayerList', filteredLayers)
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)
@@ -179,6 +231,15 @@ export default {
   getters: {
     ingredientList(state: State) {
       return state.ingredientList
+    },
+    layerList(state: State) {
+      return state.layerList
+    },
+    kgPrice(state: State) {
+      return state.kgPrice
+    },
+    price(state: State) {
+      return state.price
     },
     ingredientById(state: State) {
       return (id: string) =>

@@ -6,8 +6,7 @@
         <v-col>
           <app-new-ingredient></app-new-ingredient>
 
-          {{ cakePrice }}
-
+          {{ layerList }}
         </v-col>
       </v-row>
       <hr />
@@ -20,7 +19,7 @@
         </v-col>
         <v-col class=" col-md-8 col-sm-11 mx-auto">
           <v-data-table
-            v-model="layers"
+            v-model="layerList"
             :headers="headers"
             :items="desserts"
             item-key="name"
@@ -133,11 +132,11 @@ export default class Calc extends Vue {
   private bpm = 20
   private height = 10
   private desserts = this.$store.getters.ingredientList
-  // private layers = this.$store.getters.layersList
-  // private cake: IngredientClass = this.layers.find((h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk')
-
-  private layers = []
-  private cake: IngredientClass = new IngredientClass('', '', '', 0, false)
+  private layerList = this.$store.getters.layerList
+  private kgPrice = this.$store.getters.kgPrice
+  private cake = this.layerList.find(
+    (h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk'
+  )
 
   get weight(): number {
     return (
@@ -146,23 +145,13 @@ export default class Calc extends Vue {
     )
   }
 
-  private cakePrice = 0
-
-  beforeUpdate() {
-    this.layers = this.desserts.filter((v: IngredientClass) => v.checked)
-    const initialCake = this.desserts.find((h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk')!
-    this.cakePrice  = Object.assign({}, initialCake).price
-    console.log(this.cakePrice)
-    this.cake = this.layers.find((h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk')!
-    this.cake.price = +(this.weight * this.cakePrice).toFixed(2)
+  @Watch('weight')
+  onChange() {
+    this.cake.price = (this.weight * this.kgPrice).toFixed(2)
   }
-
-
-  // @Watch('this.weight')
-  // onChange() {
-  //
-  //   this.cake.price = this.cakePrice
-  // }
+  mounted() {
+    this.$store.commit('loadLayerList')
+  }
 
   private headers = [
     {
@@ -176,7 +165,7 @@ export default class Calc extends Vue {
   ]
 
   get total(): number {
-    return this.layers.reduce(function(sum: number, elem: IngredientClass) {
+    return this.layerList.reduce(function(sum: number, elem: IngredientClass) {
       return sum + elem.price
     }, 0)
   }
