@@ -27,7 +27,7 @@ interface State {
   ingredientList: Array<IngredientClass>
   layerList: Array<IngredientClass>
   kgPrice: number
-  price: number
+  cake: any
 }
 
 Vue.use(Vuex)
@@ -36,7 +36,8 @@ export default {
   state: {
     ingredientList: [],
     kgPrice: 0,
-    layerList: []
+    layerList: [],
+    cake: {}
   },
   mutations: {
     loadIngredient(state: State, payload: Array<IngredientClass>) {
@@ -47,6 +48,9 @@ export default {
     },
     loadLayerList(state: State, payload: Array<IngredientClass>) {
       state.layerList.push(...payload)
+      state.cake = state.layerList.find(
+        (v: IngredientClass) => v.id === '-MU87c_YGLq9Mx4xWZkk'
+      )!
     },
     createIngredient(state: State, payload: IngredientClass) {
       state.ingredientList.push(payload)
@@ -238,8 +242,8 @@ export default {
     kgPrice(state: State) {
       return state.kgPrice
     },
-    price(state: State) {
-      return state.price
+    cake(state: State) {
+      return state.cake
     },
     ingredientById(state: State) {
       return (id: string) =>

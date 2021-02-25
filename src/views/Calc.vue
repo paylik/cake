@@ -5,8 +5,6 @@
         <v-col> <h1>Калькулятор</h1> </v-col>
         <v-col>
           <app-new-ingredient></app-new-ingredient>
-
-          {{ layerList }}
         </v-col>
       </v-row>
       <hr />
@@ -28,6 +26,7 @@
             hide-default-footer
           >
           </v-data-table>
+
           <v-card class="mx-auto my-0 elevation-5">
             <v-card-text>
               <v-row class="mb-4" justify="space-between">
@@ -124,9 +123,13 @@
 import {Component, Vue, Watch} from 'vue-property-decorator'
 import NewIngredient from '@/views/NewIngredient.vue'
 import {IngredientClass} from '@/store/ingredient'
+import EditLayerModal from '@/views/EditLayerModal.vue'
 
 @Component({
-  components: {appNewIngredient: NewIngredient}
+  components: {
+    appNewIngredient: NewIngredient,
+    appEditLayerModal: EditLayerModal
+  }
 })
 export default class Calc extends Vue {
   private bpm = 20
@@ -134,9 +137,7 @@ export default class Calc extends Vue {
   private desserts = this.$store.getters.ingredientList
   private layerList = this.$store.getters.layerList
   private kgPrice = this.$store.getters.kgPrice
-  private cake = this.layerList.find(
-    (h: IngredientClass) => h.id === '-MU87c_YGLq9Mx4xWZkk'
-  )
+  private cake = this.$store.getters.cake
 
   get weight(): number {
     return (
@@ -144,13 +145,15 @@ export default class Calc extends Vue {
       100
     )
   }
-
+  @Watch('layerList.length')
+  onLayers() {
+    this.cake = this.$store.getters.cake
+    this.kgPrice = this.$store.getters.kgPrice
+    this.cake.price = +(this.weight * this.kgPrice).toFixed(2)
+  }
   @Watch('weight')
   onChange() {
-    this.cake.price = (this.weight * this.kgPrice).toFixed(2)
-  }
-  mounted() {
-    this.$store.commit('loadLayerList')
+    this.cake.price = +(this.weight * this.kgPrice).toFixed(2)
   }
 
   private headers = [
