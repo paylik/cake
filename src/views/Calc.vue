@@ -25,6 +25,88 @@
             class="elevation-5"
             hide-default-footer
           >
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-toolbar-title>
+                  Калькулятор
+                </v-toolbar-title>
+                <v-divider class="mx-4" inset vertical></v-divider>
+                <v-spacer></v-spacer>
+                <v-dialog v-model="dialog" max-width="600">
+                  <template v-slot: activator="{on, attrs}">
+                    <v-btn color="success" dark class="mb-2" v-bind="attrs" v-on="on">
+                      Добавить
+                    </v-btn>
+                  </template>
+                  <v-card>
+                    <v-card-title>
+                      <span class="headline">{{formTitle}}</span>
+                    </v-card-title>
+                    <v-card-text>
+                      <v-container>
+                        <v-row>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedLayer.name" label="Hаименование">
+
+                            </v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model="editedLayer.description" label="Описание">
+
+                            </v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-text-field v-model.number="editedLayer.price" label="Цена">
+
+                            </v-text-field>
+                          </v-col>
+                          <v-col cols="12" sm="6" md="4">
+                            <v-card-text> Выбрано </v-card-text>
+                            <v-checkbox v-model="editedLayer.checked" color="success" hide-details>
+                            </v-checkbox>
+                          </v-col>
+                        </v-row>
+                      </v-container>
+                    </v-card-text>
+
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="success" text @click="close">Отмена</v-btn>
+                      <v-btn color="success" text @click="save">Записать</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+                <v-dialog v-model="dialogDelete" max-width="600">
+                  <v-card>
+                    <v-card-title class="headline"> А ты уверен, что хочешь удалить?</v-card-title>
+                    <v-card-actions>
+                      <v-spacer>
+                      </v-spacer>
+                      <v-btn color="blue" text @click="closeDelete"> Отмена </v-btn>
+                      <v-btn color="blue" text @click="deleteLayerConfirm"></v-btn>
+                      <v-spacer></v-spacer>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
+              </v-toolbar>
+            </template>
+            <template v-slot:item.actions="{ item }">
+              <v-icon
+                      class="mr-2"
+                      @click="editLayer(item)"
+              >
+                mdi-pencil
+              </v-icon>
+              <v-icon
+                      class="mr-2"
+                      @click="deleteLayer(item)"
+              >
+                mdi-delete
+              </v-icon>
+            </template>
+            <template v-slot:no-data>
+              <v-btn color="primary" @click="initialize"> Очистить </v-btn>
+            </template>
           </v-data-table>
 
           <v-card class="mx-auto my-0 elevation-5">
@@ -139,6 +221,19 @@ export default class Calc extends Vue {
   private kgPrice = this.$store.getters.kgPrice
   private cake = this.$store.getters.cake
 
+  private dialog = false
+  private dialogDelete = false
+
+  private editedIndex = -1
+
+  private editedLayer = new IngredientClass('','','',0,false)
+
+  private defaultLayer = new IngredientClass('','','',0,false)
+
+  get formTitle() {
+    return this.editedIndex === -1 ? 'Новый слой' : 'Добавить слой'
+  }
+
   get weight(): number {
     return (
       Math.floor((this.bpm * this.bpm * Math.PI * this.height * 1.25) / 100) /
@@ -164,7 +259,8 @@ export default class Calc extends Vue {
       value: 'name'
     },
     {text: 'Описание', value: 'description'},
-    {text: 'Стоимость', value: 'price'}
+    {text: 'Стоимость', value: 'price'},
+    {text: 'Ред.', value: 'actions', sortable: false}
   ]
 
   get total(): number {
@@ -193,6 +289,44 @@ export default class Calc extends Vue {
   private incrementHeight(): void {
     this.height++
   }
+
+  private editLayer(dessert: IngredientClass): void {
+    this.editedIndex = this.desserts.indexOf(dessert)
+    this.editedLayer = Object.assign({}, dessert)
+    this.dialog = true
+  }
+  private deleteLayer(dessert: IngredientClass): void {
+    this.editedIndex = this.desserts.indexOf(dessert)
+    this.editedLayer = Object.assign({}, dessert)
+    this.dialogDelete = true
+  }
+  private deleteLayerConfirm() {
+    this.desserts.slice(this.editedIndex, 1)
+    this.closeDelete()
+  }
+  private close() {
+    this.dialog = false
+    this.$nextTick(() => {
+      this.editedLayer = Object.assign({}, this.defaultLayer)
+      this.editedIndex = -1
+    })
+  }
+  private closeDelete() {
+    this.dialogDelete = false
+    this.$nextTick(() => {
+      this.editedLayer = Object.assign({}, this.defaultLayer)
+      this.editedIndex = -1
+    })
+  }
+  private save() {
+    if(this.editedIndex > -1) {
+      Object.assign(this.desserts[this.editedIndex], this.editedLayer)
+    } else {
+      this.desserts.push(this.editedLayer)
+    }
+    this.close()
+  }
+
 }
 </script>
 

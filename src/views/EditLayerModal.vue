@@ -1,5 +1,5 @@
-<template>
-  <v-dialog v-model="dialog" persistent max-width="600">
+ <template>
+  <v-dialog v-model="dialog2" persistent max-width="600">
     <template v-slot:activator="{on, attrs}">
       <v-btn color="primary" dark v-bind="attrs" v-on="on">
         <v-icon>mdi-table-edit</v-icon>
@@ -43,7 +43,7 @@
         </v-row>
         <v-row>
           <v-card-text>По умолчанию</v-card-text>
-          <v-checkbox v-model="editedСhecked" color="success" hide-details>
+          <v-checkbox v-model="editedChecked" color="success" hide-details>
           </v-checkbox>
         </v-row>
       </v-card-text>
@@ -70,11 +70,30 @@ export default class EditLayerModal extends Vue {
   @Prop(IngredientClass) readonly ingredient!: IngredientClass
 
   private valid = false
-  private dialog = false
+  private dialog2 = false
   private editedName = this.ingredient.name
   private editedDescription = this.ingredient.description
   private editedPrice = this.ingredient.price
-  private editedСhecked = this.ingredient.checked
+  private editedChecked = this.ingredient.checked
+
+  // private editedIndex = -1
+  // private editedItem = {
+  //   id: '',
+  //   name: '',
+  //   description: '',
+  //   price: 0,
+  //   checked: false,
+  // }
+  //
+  // get desserts() {
+  //   return this.$store.getters.ingredientList
+  // }
+
+  private editLayer(dessert: IngredientClass): void {
+    // this.editedIndex = this.desserts.indexOf(dessert)
+    // this.editedItem = Object.assign({}, dessert)
+    this.dialog2 = true
+  }
 
   private onSave(): void {
     this.$store.dispatch('updateIngredient', {
@@ -82,18 +101,18 @@ export default class EditLayerModal extends Vue {
       name: this.editedName,
       description: this.editedDescription,
       price: this.editedPrice,
-      checked: this.editedСhecked
+      checked: this.editedChecked
     })
 
-    this.dialog = false
+    this.dialog2 = false
   }
 
   private onCancel(): void {
-    this.dialog = false
+    this.dialog2 = false
     this.editedName = this.ingredient.name
     this.editedDescription = this.ingredient.description
     this.editedPrice = this.ingredient.price
-    this.editedСhecked = this.ingredient.checked
+    this.editedChecked = this.ingredient.checked
   }
 }
 </script>
