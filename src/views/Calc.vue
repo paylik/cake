@@ -2,13 +2,6 @@
   <div class="calc">
     <v-container>
       <v-row class="my-5">
-        <v-col> <h1>Калькулятор</h1> </v-col>
-        <v-col>
-          <app-new-ingredient></app-new-ingredient>
-        </v-col>
-      </v-row>
-      <hr />
-      <v-row class="my-5">
         <v-col class="col-md-4 d-none d-md-flex">
           <v-img
             class="mx-auto"
@@ -33,37 +26,66 @@
                 <v-divider class="mx-4" inset vertical></v-divider>
                 <v-spacer></v-spacer>
                 <v-dialog v-model="dialog" max-width="600">
-                  <template v-slot: activator="{on, attrs}">
-                    <v-btn color="success" dark class="mb-2" v-bind="attrs" v-on="on">
+                  <template v-slot:activator="{on, attrs}">
+                    <v-btn
+                      color="success"
+                      dark
+                      class="mb-2"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
                       Добавить
                     </v-btn>
                   </template>
                   <v-card>
                     <v-card-title>
-                      <span class="headline">{{formTitle}}</span>
+                      <span class="headline">{{ formTitle }}</span>
                     </v-card-title>
                     <v-card-text>
                       <v-container>
                         <v-row>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedLayer.name" label="Hаименование">
-
+                          <v-col>
+                            <v-text-field
+                              v-model="editedLayer.name"
+                              label="Hаименование"
+                              :rules="[v => !!v || 'Наименование не задано']"
+                            >
                             </v-text-field>
                           </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model="editedLayer.description" label="Описание">
-
+                        </v-row>
+                        <v-row>
+                          <v-col>
+                            <v-text-field
+                              v-model="editedLayer.description"
+                              label="Описание"
+                              :rules="[v => !!v || 'Описание не задано']"
+                            >
                             </v-text-field>
                           </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-text-field v-model.number="editedLayer.price" label="Цена">
-
+                        </v-row>
+                        <v-row>
+                          <v-col>
+                            <v-text-field
+                              v-model.number="editedLayer.price"
+                              label="Цена"
+                              :rules="[v => !!v || 'Цена не задана']"
+                              type="number"
+                            >
                             </v-text-field>
                           </v-col>
-                          <v-col cols="12" sm="6" md="4">
-                            <v-card-text> Выбрано </v-card-text>
-                            <v-checkbox v-model="editedLayer.checked" color="success" hide-details>
+                        </v-row>
+                        <v-row>
+                          <v-col>
+                            <v-checkbox
+                              v-model="editedLayer.checked"
+                              color="success"
+                              hide-details
+                              class="float-left"
+                            >
                             </v-checkbox>
+                            <v-card-text>
+                              Выбрано
+                            </v-card-text>
                           </v-col>
                         </v-row>
                       </v-container>
@@ -78,34 +100,30 @@
                 </v-dialog>
                 <v-dialog v-model="dialogDelete" max-width="600">
                   <v-card>
-                    <v-card-title class="headline"> А ты уверен, что хочешь удалить?</v-card-title>
+                    <v-card-title class="headline">
+                      А ты уверен, что хочешь удалить?</v-card-title
+                    >
                     <v-card-actions>
-                      <v-spacer>
-                      </v-spacer>
-                      <v-btn color="blue" text @click="closeDelete"> Отмена </v-btn>
-                      <v-btn color="blue" text @click="deleteLayerConfirm"></v-btn>
+                      <v-spacer> </v-spacer>
+                      <v-btn color="blue" text @click="closeDelete">
+                        Отмена
+                      </v-btn>
+                      <v-btn color="blue" text @click="deleteLayerConfirm"
+                        >Удалить</v-btn
+                      >
                       <v-spacer></v-spacer>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
               </v-toolbar>
             </template>
-            <template v-slot:item.actions="{ item }">
-              <v-icon
-                      class="mr-2"
-                      @click="editLayer(item)"
-              >
+            <template v-slot:item.actions="{item}">
+              <v-icon class="mr-2" @click="editLayer(item)">
                 mdi-pencil
               </v-icon>
-              <v-icon
-                      class="mr-2"
-                      @click="deleteLayer(item)"
-              >
+              <v-icon class="mr-2" @click="deleteLayer(item)">
                 mdi-delete
               </v-icon>
-            </template>
-            <template v-slot:no-data>
-              <v-btn color="primary" @click="initialize"> Очистить </v-btn>
             </template>
           </v-data-table>
 
@@ -115,15 +133,15 @@
                 <v-col class="text-left">
                   <span
                     class="display-1 font-weight-light"
-                    v-text="`Диаметр - ` + bpm"
+                    v-text="`Диаметр - ` + diameter"
                   ></span>
                   <span class="display-1 font-weight-light">см.</span>
                 </v-col>
-                <v-col class="text-right"> </v-col>
+                <!--                <v-col class="text-right"> </v-col>-->
               </v-row>
 
               <v-slider
-                v-model="bpm"
+                v-model="diameter"
                 :color="color"
                 track-color="grey"
                 always-dirty
@@ -154,7 +172,7 @@
                   ></span>
                   <span class="display-1 font-weight-light">см.</span>
                 </v-col>
-                <v-col class="text-right"> </v-col>
+                <!--                <v-col class="text-right"> </v-col>-->
               </v-row>
 
               <v-slider
@@ -194,7 +212,14 @@
           </v-card>
         </v-col>
         <v-col class="col-12 col-md-4">
-          <v-btn class="success elevation-5"> Отправить заявку </v-btn>
+          <app-send-mail
+            :layer-list="layerList"
+            :total="total"
+            :diameter="diameter"
+            :height="height"
+            :weight="weight"
+          ></app-send-mail>
+          <!--          <v-btn class="success elevation-5"> Отправить заявку </v-btn>-->
         </v-col>
       </v-row>
     </v-container>
@@ -203,18 +228,16 @@
 
 <script lang="ts">
 import {Component, Vue, Watch} from 'vue-property-decorator'
-import NewIngredient from '@/views/NewIngredient.vue'
+import SendMail from '@/views/SendMail.vue'
 import {IngredientClass} from '@/store/ingredient'
-import EditLayerModal from '@/views/EditLayerModal.vue'
 
 @Component({
   components: {
-    appNewIngredient: NewIngredient,
-    appEditLayerModal: EditLayerModal
+    appSendMail: SendMail
   }
 })
 export default class Calc extends Vue {
-  private bpm = 20
+  private diameter = 20
   private height = 10
   private desserts = this.$store.getters.ingredientList
   private layerList = this.$store.getters.layerList
@@ -226,18 +249,31 @@ export default class Calc extends Vue {
 
   private editedIndex = -1
 
-  private editedLayer = new IngredientClass('','','',0,false)
+  private editedLayer: IngredientClass = new IngredientClass(
+    '',
+    '',
+    '',
+    0,
+    false
+  )
 
-  private defaultLayer = new IngredientClass('','','',0,false)
+  private defaultLayer: IngredientClass = new IngredientClass(
+    '',
+    '',
+    '',
+    0,
+    false
+  )
 
   get formTitle() {
-    return this.editedIndex === -1 ? 'Новый слой' : 'Добавить слой'
+    return this.editedIndex === -1 ? 'Новый слой' : 'Редактировать слой'
   }
 
   get weight(): number {
     return (
-      Math.floor((this.bpm * this.bpm * Math.PI * this.height * 1.25) / 100) /
-      100
+      Math.floor(
+        (this.diameter * this.diameter * Math.PI * this.height * 1.25) / 100
+      ) / 100
     )
   }
   @Watch('layerList.length')
@@ -270,18 +306,18 @@ export default class Calc extends Vue {
   }
 
   get color() {
-    if (this.bpm < 20) return 'indigo'
-    if (this.bpm < 25) return 'teal'
-    if (this.bpm < 30) return 'green'
-    if (this.bpm < 35) return 'orange'
+    if (this.diameter < 20) return 'indigo'
+    if (this.diameter < 25) return 'teal'
+    if (this.diameter < 30) return 'green'
+    if (this.diameter < 35) return 'orange'
     return 'red'
   }
 
   private decrement(): void {
-    this.bpm--
+    this.diameter--
   }
   private increment(): void {
-    this.bpm++
+    this.diameter++
   }
   private decrementHeight(): void {
     this.height--
@@ -301,7 +337,8 @@ export default class Calc extends Vue {
     this.dialogDelete = true
   }
   private deleteLayerConfirm() {
-    this.desserts.slice(this.editedIndex, 1)
+    this.desserts.splice(this.editedIndex, 1)
+    this.$store.dispatch('deleteIngredient', this.editedLayer.id)
     this.closeDelete()
   }
   private close() {
@@ -319,14 +356,14 @@ export default class Calc extends Vue {
     })
   }
   private save() {
-    if(this.editedIndex > -1) {
-      Object.assign(this.desserts[this.editedIndex], this.editedLayer)
+    if (this.editedIndex > -1) {
+      // Object.assign(this.desserts[this.editedIndex], this.editedLayer)
+      this.$store.dispatch('updateIngredient', this.editedLayer)
     } else {
-      this.desserts.push(this.editedLayer)
+      this.$store.dispatch('createIngredient', this.editedLayer)
     }
     this.close()
   }
-
 }
 </script>
 

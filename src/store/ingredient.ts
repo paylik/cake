@@ -68,12 +68,12 @@ export default {
         ingredient.price = price
         ingredient.checked = checked
       }
-    },
-    updateIngredientList(state: State, id: string) {
-      state.ingredientList = state.ingredientList.filter(
-        (i: IngredientClass) => i.id !== id
-      )
     }
+    // updateIngredientList(state: State, id: string) {
+    //   state.ingredientList = state.ingredientList.filter(
+    //     (i: IngredientClass) => i.id !== id
+    //   )
+    // }
   },
   actions: {
     async fetchIngredients({commit}: {commit: Function}) {
@@ -223,7 +223,7 @@ export default {
           .ref('ingredient')
           .child(id)
           .remove()
-        commit('updateIngredientList', id)
+        // commit('updateIngredientList', id)
         commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)

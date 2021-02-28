@@ -25,9 +25,24 @@
               Разработка сайта: paylik@yandex.ru
             </a></strong
           >
-        </v-col></v-row
-      ></v-footer
+        </v-col>
+      </v-row>
+    </v-footer>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="5000"
+      :multi-line="true"
+      @input="closeError"
+      v-if="error"
     >
+      {{ error }}
+
+      <template v-slot:action="{attrs}">
+        <v-btn color="pink" text v-bind="attrs" @click.native="closeError">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
   </v-app>
 </template>
 
