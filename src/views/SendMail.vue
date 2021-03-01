@@ -90,6 +90,7 @@
         >
         <v-btn color="red" text @click="onCancel"> Отмена</v-btn>
       </v-card-actions>
+      {{ layers }}
     </v-card>
   </v-dialog>
 </template>
@@ -97,8 +98,7 @@
 <script lang="ts">
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import {IngredientClass} from '@/store/ingredient'
-import axios from 'axios'
-import router from '@/router'
+import emailjs from 'emailjs-com'
 
 @Component
 export default class SendMail extends Vue {
@@ -129,28 +129,37 @@ export default class SendMail extends Vue {
   private phone = ''
   private address = ''
   private name = ''
-  private layers = this.layerList.map(v => v.name)
+  private layers = this.layerList.map(v => v['name'])
 
   private sendMail(): void {
-    axios
-      .post('mail.php', {
-        Слои: this.layers,
-        Имя: this.name,
-        Телефон: this.phone,
-        Адрес: this.address,
-        Основа: this.select,
-        Цвет: this.color,
-        Надпись: this.inscription,
-        Диаметр: this.diameter,
-        Высота: this.height,
-        Вес: this.weight,
-        Цена: this.total
-      })
-      .then(() => alert('Спасибо за заказ'))
-      .then(() => this.$router.push('/'))
-      .catch(error => {
-        console.log(error)
-      })
+    emailjs
+      .send(
+        'service_cccujca',
+        'template_vey7hrm',
+        {
+          layers: this.layers,
+          name: this.name,
+          phone: this.phone,
+          address: this.address,
+          select: this.select,
+          color: this.color,
+          inscription: this.inscription,
+          diameter: this.diameter,
+          height: this.height,
+          weight: this.weight,
+          total: this.total
+        },
+        'user_Xd6nHWJFHD8ULYlJ9QG7O'
+      )
+      .then(
+        function(response) {
+          console.log('SUCCESS!', response.status, response.text)
+        },
+        function(error) {
+          console.log('FAILED...', error)
+        }
+      )
+
     this.dialogMail = false
   }
 
