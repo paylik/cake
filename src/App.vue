@@ -9,25 +9,7 @@
         ></v-row>
       </v-container>
     </v-main>
-    <v-footer>
-      <v-row
-        ><v-col
-          class="primary lighten-2 py-4 text-center white--text"
-          cols="12"
-        >
-          Пироженка {{ new Date().getFullYear() }} —
-          <strong>
-            <a
-              href="mailto:paylik@yandex.ru
-        ?subject=Запрос%20Тортики%20Сморгонь
-        &body=Запрос%20Тортики%20Сморгонь"
-            >
-              Разработка сайта: paylik@yandex.ru
-            </a></strong
-          >
-        </v-col>
-      </v-row>
-    </v-footer>
+    <Footer />
     <v-snackbar
       v-model="snackbar"
       :timeout="5000"
@@ -50,9 +32,11 @@
 import {Vue, Component, Prop} from 'vue-property-decorator'
 import Header from '@/components/Header.vue'
 import firebase from 'firebase'
+import Footer from '@/components/Footer.vue'
 @Component({
   components: {
-    Header
+    Header,
+    Footer
   }
 })
 export default class App extends Vue {
@@ -65,10 +49,6 @@ export default class App extends Vue {
 
   get error(): string {
     return this.$store.getters.error
-  }
-
-  get isUserLoggedIn(): boolean {
-    return this.$store.getters.isUserLoggedIn
   }
 
   get loading(): boolean {

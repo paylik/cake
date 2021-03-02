@@ -17,6 +17,7 @@
             show-select
             class="elevation-5"
             hide-default-footer
+            mobile-breakpoint="0"
           >
             <template v-slot:top>
               <v-toolbar flat>
@@ -25,7 +26,7 @@
                 </v-toolbar-title>
                 <v-divider class="mx-4" inset vertical></v-divider>
                 <v-spacer></v-spacer>
-                <v-dialog v-model="dialog" max-width="600">
+                <v-dialog v-model="dialog" max-width="600" v-if="isUserLogin">
                   <template v-slot:activator="{on, attrs}">
                     <v-btn
                       color="success"
@@ -137,7 +138,6 @@
                   ></span>
                   <span class="display-1 font-weight-light">см.</span>
                 </v-col>
-                <!--                <v-col class="text-right"> </v-col>-->
               </v-row>
 
               <v-slider
@@ -172,7 +172,6 @@
                   ></span>
                   <span class="display-1 font-weight-light">см.</span>
                 </v-col>
-                <!--                <v-col class="text-right"> </v-col>-->
               </v-row>
 
               <v-slider
@@ -216,10 +215,10 @@
             :layer-list="layerList"
             :total="total"
             :diameter="diameter"
+
             :height="height"
             :weight="weight"
           ></app-send-mail>
-          <!--          <v-btn class="success elevation-5"> Отправить заявку </v-btn>-->
         </v-col>
       </v-row>
     </v-container>
@@ -237,13 +236,14 @@ import {IngredientClass} from '@/store/ingredient'
   }
 })
 export default class Calc extends Vue {
+
   private diameter = 20
   private height = 10
   private desserts = this.$store.getters.ingredientList
   private layerList = this.$store.getters.layerList
   private kgPrice = this.$store.getters.kgPrice
   private cake = this.$store.getters.cake
-
+  private isUserLogin = this.$store.getters.isUserLogin
   private dialog = false
   private dialogDelete = false
 
@@ -294,10 +294,26 @@ export default class Calc extends Vue {
       sortable: false,
       value: 'name'
     },
-    {text: 'Описание', value: 'description'},
-    {text: 'Стоимость', value: 'price'},
-    {text: 'Ред.', value: 'actions', sortable: false}
+    {text: 'Описание', value: 'description', cellClass: 'hidden-xs-only', class: 'd-none d-sm-block'},
+    {text: 'Стоимость', value: 'price'}
   ]
+
+  // get headers() {
+  //   if(this.isUserLogin) {
+  //     this.header.push({text: 'Ред.', value: 'actions'})
+  //     return this.header
+  //   } else {
+  //   return this.header
+  // }}
+
+  mounted() {
+
+    if(this.isUserLogin) {
+      this.headers.push({text: 'Ред.', value: 'actions'})
+    }
+
+    this.$nextTick()
+  }
 
   get total(): number {
     return this.layerList.reduce(function(sum: number, elem: IngredientClass) {

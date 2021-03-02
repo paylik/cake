@@ -56,6 +56,8 @@ export default {
       if (state.user) {
         const s: boolean = state.user.id === 'bmpRW0nCNUZBRgCPe2cxtQa3Cq72'
         return s
+      } else {
+        return false
       }
     }
   }

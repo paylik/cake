@@ -90,7 +90,6 @@
         >
         <v-btn color="red" text @click="onCancel"> Отмена</v-btn>
       </v-card-actions>
-      {{ layers }}
     </v-card>
   </v-dialog>
 </template>
@@ -99,14 +98,16 @@
 import {Component, Prop, Vue} from 'vue-property-decorator'
 import {IngredientClass} from '@/store/ingredient'
 import emailjs from 'emailjs-com'
+import User from 'firebase'
 
 @Component
 export default class SendMail extends Vue {
-  @Prop() readonly layerList: Array<IngredientClass> = []
-  @Prop() readonly total: number = 0
-  @Prop() readonly diameter: number = 0
-  @Prop() readonly height: number = 0
-  @Prop() readonly weight: number = 0
+  @Prop() readonly total: number | undefined
+  @Prop() readonly diameter: number | undefined
+  @Prop() readonly height: number | undefined
+  @Prop() readonly weight: number | undefined
+
+  private layerList = this.$store.getters.layerList
 
   private ingredient = new IngredientClass('', '', '', 0, false)
   private valid = false
@@ -129,7 +130,6 @@ export default class SendMail extends Vue {
   private phone = ''
   private address = ''
   private name = ''
-  private layers = this.layerList.map(v => v['name'])
 
   private sendMail(): void {
     emailjs
@@ -137,7 +137,7 @@ export default class SendMail extends Vue {
         'service_cccujca',
         'template_vey7hrm',
         {
-          layers: this.layers,
+          layers: this.layerList.map((v: IngredientClass) => v.name),
           name: this.name,
           phone: this.phone,
           address: this.address,
@@ -161,6 +161,9 @@ export default class SendMail extends Vue {
       )
 
     this.dialogMail = false
+    this.$store.dispatch('setError', 'Спасибо за заказ')
+    setTimeout(() => this.$store.dispatch('setError', null), 5000)
+
   }
 
   private onCancel(): void {
@@ -170,6 +173,11 @@ export default class SendMail extends Vue {
   get loading(): boolean {
     return this.$store.getters.loading
   }
+
+  get error(): string {
+    return this.$store.getters.error
+  }
+
 }
 </script>
 
